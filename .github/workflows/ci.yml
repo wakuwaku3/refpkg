@@ -8,4 +8,4 @@ jobs:
     container: golang:1.14-buster
     steps:
       - uses: actions/checkout@v2
-      - run: make test
+      - run: go test -race -covermode=atomic ./... -test.v
