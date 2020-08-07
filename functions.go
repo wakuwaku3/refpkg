@@ -73,18 +73,17 @@ func cnvType(pkgName string, t types.Type) *TypeInfo {
 
 func getBasedType(t types.Type, prevName string) BasedType {
 	name := t.String()
-	switch name {
-	case "interface{}":
-		return BasedTypeInterface
-	case "struct{}":
-		return BasedTypeStruct
-	case "func()":
-		return BasedTypeFunc
-	case prevName:
+	if name == prevName {
 		if strings.HasPrefix(name, "untyped") {
 			return BasedTypeConst
 		}
 		return BasedTypeVar
+	} else if strings.HasPrefix(name, "interface{") {
+		return BasedTypeInterface
+	} else if strings.HasPrefix(name, "struct{") {
+		return BasedTypeStruct
+	} else if strings.HasPrefix(name, "func(") {
+		return BasedTypeFunc
 	}
 	return getBasedType(t.Underlying(), name)
 }
